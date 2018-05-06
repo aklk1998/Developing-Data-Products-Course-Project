@@ -22,7 +22,7 @@ ui <- fluidPage(
    # Application title
    titlePanel("Creation of a 3D Plot from mtcars"),
    
-     headerPanel('mtcars 3D plot'),
+     headerPanel('Please select the X, Y, Z and Color Variables'),
      sidebarPanel(
        selectInput('xcol', 'X Variable', choices=nm,
                   selected="cyl"),
