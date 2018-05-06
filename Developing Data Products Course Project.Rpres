@@ -1,0 +1,75 @@
+Developing Data Products Course Project
+========================================================
+author: AK
+date: May 06, 2018
+autosize: true
+
+This presentation provides a brief summary of the submitted Developing Data Products Course Project.
+
+Introduction
+========================================================
+
+- The objective of this exercise is to develop a simple Shiny web application to create a 3D scatter plot from mtcars on the basis of user's selection of X, Y, Z and Color variables.
+
+Ui.R
+========================================================
+
+Following codes enable an user to select X, Y, Z and Color Variables
+
+```{r }
+  library(shiny)
+  library(plotly)
+  nm <- names(mtcars)
+  To_date <- Sys.Date()
+  data(mtcars)
+  ui <- fluidPage(
+   
+   # Application title
+   titlePanel("Creation of a 3D Plot from mtcars"),
+   
+     headerPanel('Please select the X, Y, Z and Color Variables'),
+     sidebarPanel(
+       selectInput('xcol', 'X Variable', choices=nm,
+                  selected="cyl"),
+       selectInput('ycol', 'Y Variable', choices=nm,
+                   selected="mpg"),
+       selectInput('zcol', 'X Variable', choices=nm,
+                   selected="hp"),
+       selectInput('col', 'Color Variable', choices=nm,
+                   selected="am")
+     ),
+     mainPanel(
+       plotlyOutput('plot1')
+     )
+  )
+```
+
+server.R
+========================================================
+Using plot_ly, following codes plot an interactive 3D Scatter Plot
+
+```{r}
+server <- function(input, output, session) {
+     output$plot1 <- renderPlotly({
+         plot_ly(mtcars,x=mtcars[,input$xcol],y=mtcars[,input$ycol], 
+               z=mtcars[,input$zcol], 
+               type="scatter3d",mode="markers",color=mtcars[,input$col]) %>%
+         layout(
+           title = paste("Today Date: ",To_date,"\n",input$xcol,"vs",input$ycol,"vs",input$zcol,sep=" "),
+           scene = list(
+             xaxis = list(title = paste("x: ",input$xcol)),
+             yaxis = list(title = paste("y: ",input$ycol)),
+             zaxis = list(title = paste("z: ",input$zcol))
+           ))
+     })
+   }
+```
+
+Shiny Application and R Source Codes
+========================================================
+
+- Can try the Shiny Application <a href="https://aklk1998.shinyapps.io/Create3Dplot/">Here</a>
+
+- The R source code is <a href= "https://github.com/aklk1998/Developing-Data-Products-Course-Project/blob/master/app.R">Here</a>
+
+- The r presentation source file is <a href= "https://github.com/aklk1998/Developing-Data-Products-Course-Project/blob/master/Developing Data Products Course Project.Rpres">Here</a>
